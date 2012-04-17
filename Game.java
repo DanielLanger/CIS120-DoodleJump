@@ -7,7 +7,7 @@ public class Game implements Runnable {
    public void run() {
       // Top-level frame
       final JFrame frame = new JFrame("Pong");
-      frame.setLocation(300, 300);
+      frame.setLocation(300,200);
 
       // Main playing area
       final PongCourt court = new PongCourt();
