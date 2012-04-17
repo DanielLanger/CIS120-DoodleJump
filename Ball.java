@@ -19,7 +19,7 @@ public class Ball extends GameObject {
 	public void bounce(Intersection i) {
 		switch (i) {
 		case NONE: break;
-		case UP: velocityY = -4; gravity=0.8; break;
+		case UP: velocityY = -5; gravity=0.8; break;
 		}
 	}
 	
@@ -30,5 +30,7 @@ public class Ball extends GameObject {
 
 	public void draw(Graphics g) {
 		g.fillOval(x, y, DIAMETER, DIAMETER);
+		g.drawString("Score " + y , 225, 15);
 	}
+	
 }

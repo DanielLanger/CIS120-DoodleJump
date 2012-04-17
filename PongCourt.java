@@ -7,21 +7,24 @@ import javax.swing.*;
 public class PongCourt extends JComponent {
 	private Ball ball;
 	private Paddle paddle;
+	private Paddle paddle2;
 
 	private int interval = 35; // Milliseconds between updates.
 	private Timer timer;       // Each time timer fires we animate one step.
 
 	final int COURTWIDTH  = 300;
-	final int COURTHEIGHT = 200;
+	final int COURTHEIGHT = 500;
+	int score;
 	
-	public static int score=0;
 
+	
 	final int BALL_VEL  = 4;  // How fast does the paddle move
 	
 
 	public PongCourt() {
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setFocusable(true);
+		
 
 		timer = new Timer(interval, new ActionListener() {
 			public void actionPerformed(ActionEvent e) { tick(); }});
@@ -48,10 +51,10 @@ public class PongCourt extends JComponent {
 	/** Set the state of the state of the game to its initial value and 
 	    prepare the game for keyboard input. */
 	public void reset() {
-		ball = new Ball(100, 0, 0, 3);
+		ball = new Ball(100, 0, 0, 2);
 		paddle = new Paddle(COURTWIDTH, COURTHEIGHT);
+		paddle2= new Paddle(COURTWIDTH, 300);
 		requestFocusInWindow();
-		score=0;
 	}
 
    /** Update the game one timestep by moving the ball and the paddle. */
@@ -59,11 +62,13 @@ public class PongCourt extends JComponent {
 		ball.setBounds(getWidth(), getHeight());
 		ball.move();
 		paddle.setBounds(getWidth(), getHeight());
+		paddle2.setBounds(getWidth(), getHeight());
 		paddle.move();
+		paddle2.move();
 		ball.bounce(paddle.intersects(ball));
+		ball.bounce(paddle2.intersects(ball));
 		repaint(); // Repaint indirectly calls paintComponent.
-		ball.gravity+=0.2;
-		score++;
+		ball.gravity+=0.2;	
 		
 	}
 
@@ -72,13 +77,12 @@ public class PongCourt extends JComponent {
 		super.paintComponent(g); // Paint background, border
 		ball.draw(g);
 		paddle.draw(g);
+		paddle2.draw(g);
+
 	}
 
    @Override
 	public Dimension getPreferredSize() {
 		return new Dimension(COURTWIDTH, COURTHEIGHT);
-   }
-   public static int getScore(){
-	   return score;
-   }
+    }
 }

@@ -12,7 +12,7 @@ public class Game implements Runnable {
       // Main playing area
       final PongCourt court = new PongCourt();
       frame.add(court, BorderLayout.CENTER);
-
+      
       
       // Reset button
       final JPanel panel = new JPanel();
@@ -24,6 +24,7 @@ public class Game implements Runnable {
          }
       });
       panel.add(reset);
+    
 
       
       // Put the frame on the screen
