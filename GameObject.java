@@ -12,6 +12,7 @@ public abstract class GameObject {
 
 	int rightBound; // Maximum permissible x, y values.
 	int bottomBound;
+	
 
 	public GameObject(int x, int y, int velocityX, int velocityY, int width,
 			int height) {

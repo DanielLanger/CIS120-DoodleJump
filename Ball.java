@@ -1,5 +1,4 @@
 import java.awt.*;
-import javax.swing.*;
 
 public class Ball extends GameObject {
 	final static int DIAMETER = 21;
@@ -11,9 +10,6 @@ public class Ball extends GameObject {
 
 	}
 	
-	public int getMax(){
-		return max;
-	}
 
 	public void accelerate() {
 		if (x < 0)
@@ -33,20 +29,13 @@ public class Ball extends GameObject {
 	public void move(){
 		super.move();	
 		this.y+=this.velocityY+gravity;
+		
 	}
 
 	public void draw(Graphics g) {
 		g.fillOval(x, y, DIAMETER, DIAMETER);
 		
-		int x=500-y;
-		if(x<0)
-			x=0;
-		if(x>getMax()){
-			g.drawString("Score " + (x)  , 225, 15);
-			max=x;
-		}
-		else
-			g.drawString("Score " + getMax(), 225, 15);
+		
 	}
 	
 }

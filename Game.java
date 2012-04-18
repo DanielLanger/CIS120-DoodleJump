@@ -3,7 +3,11 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+
 public class Game implements Runnable {
+	
+public static JLabel scores;
+
    public void run() {
       // Top-level frame
       final JFrame frame = new JFrame("Pong");
@@ -24,8 +28,12 @@ public class Game implements Runnable {
          }
       });
       panel.add(reset);
-    
-
+     
+      scores= new JLabel();
+      
+      scores.setText("Score " + court.score);
+      panel.add(scores);
+      
       
       // Put the frame on the screen
       frame.pack();
@@ -34,13 +42,17 @@ public class Game implements Runnable {
 
       // Start the game running
       court.reset();
+      
+      
+      
       }
-
+   
    /*
     * Get the game started!
     */
    public static void main(String[] args) {
        SwingUtilities.invokeLater(new Game());
+       
    }
 
 }
