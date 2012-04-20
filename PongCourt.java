@@ -3,41 +3,37 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.*;
+
 @SuppressWarnings("serial")
 public class PongCourt extends JComponent {
 	private Ball ball;
-	private Paddle paddle;
-	private Paddle paddle2;
-	private Paddle paddle3;
-	private Paddle paddle4;
-	private Paddle paddle5;
-	
-	private Image image;
-	
-
-
-	private int interval = 25; // Milliseconds between updates.
+	private List<Paddle> paddleList;
+	private Random rand= new Random();
+	private int interval = 20; // Milliseconds between updates.
 	private Timer timer;       // Each time timer fires we animate one step.
 
-	final int COURTWIDTH  = 300;
-	final int COURTHEIGHT = 500;
-	
-	public int max;
+	final int COURTWIDTH  = 600;
+	final int COURTHEIGHT = 600;
+
 	public int score;
-	
-	final int BALL_VEL  = 7;  // How fast does the paddle move
-	
+
+	final int BALL_VEL  = 6;  // How fast does the ball move
+
 
 	public PongCourt() {
 		//setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setFocusable(true);
-		
-		
+
+
 
 		timer = new Timer(interval, new ActionListener() {
 			public void actionPerformed(ActionEvent e) { tick(); }});
 		timer.start(); 
-
+		
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_LEFT)
@@ -59,77 +55,72 @@ public class PongCourt extends JComponent {
 	/** Set the state of the state of the game to its initial value and 
 	    prepare the game for keyboard input. */
 	public void reset() {
-		ball = new Ball(200, 400, 0, 2);
-		paddle = new Paddle(COURTWIDTH+200, COURTHEIGHT);
-		paddle2= new Paddle(COURTWIDTH-200, 300);
-		paddle3= new Paddle(COURTWIDTH-100, 100);
-		paddle4= new Paddle(COURTWIDTH-200, 400);
-		paddle5= new Paddle(COURTWIDTH, 200);
+		paddleList= new CopyOnWriteArrayList<Paddle>();
+		ball = new Ball(200, 400, 0, -5);
+		int y=600;
+		for(int x=0;x<8;x++){
+			paddleList.add(new Paddle(COURTWIDTH+525 - rand.nextInt(1000), y));
+			y-=90;
+
+		}
 		requestFocusInWindow();
 		score=0;
-		max=0;
+
 	}
 
-   /** Update the game one timestep by moving the ball and the paddle. */
+	public void stopTimer(){
+		timer.stop();
+	}
+	public void startTimer(){
+		timer.start();
+	}
+	public void restartTimer(){
+		timer.restart();
+	}
+	/** Update the game one timestep by moving the ball and the paddle. */
 	void tick() {
 		ball.setBounds(getWidth(), getHeight());
 		ball.move();
-		paddle.setBounds(getWidth(), getHeight());
-		paddle2.setBounds(getWidth(), getHeight());
-		paddle3.setBounds(getWidth(), getHeight());
-		paddle4.setBounds(getWidth(), getHeight());
-		paddle5.setBounds(getWidth(), getHeight());
-		ball.bounce(paddle.intersects(ball));
-		ball.bounce(paddle2.intersects(ball));
-		ball.bounce(paddle3.intersects(ball));
-		ball.bounce(paddle4.intersects(ball));
-		ball.bounce(paddle5.intersects(ball));
+		for(Paddle p:paddleList){
+			ball.bounce(p.intersects(ball));
+		}
 		repaint(); // Repaint indirectly calls paintComponent.
-		ball.gravity+=0.4;	
-		
-		if(ball.y>COURTHEIGHT){
-			reset();
-		}
-		
-		if(ball.y<100){
-			repaint();
-		}
-		
-		int x=500-ball.y;
-		if(x<0)
-			x=0;
-		if(x>max){
-			score=x;
-			max=x;
-			Game.scores.setText("Score " + score);
-		}
-		else{
-			score=max;
-			Game.scores.setText("Score " + score);
-		}
+		ball.gravity+=0.3;	
+		Game.scores.setText("Score " + score);	
 
-		
-		
-		
 	}
 
-   @Override
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);// Paint background, border
 		ball.draw(g);
-		paddle.draw(g);
-		paddle2.draw(g);
-		paddle3.draw(g);
-		paddle4.draw(g);
-		paddle5.draw(g);
-		
-		
-		
+		if(ball.y> COURTHEIGHT){
+			g.setFont(new Font("Verdana", Font.PLAIN, 20));
+			g.drawString("Your Final Score: " + score, COURTWIDTH/2-110, 15);
+			timer.stop();
+		}
+
+		if(ball.postMove<ball.holder ){
+			for(Paddle p: paddleList){
+				
+				p.y+=11;
+				score+=1;
+
+				if(p.y>COURTHEIGHT-10){
+					paddleList.remove(p);
+					paddleList.add(new Paddle(rand.nextInt(1150), -10));
+				}
+			}				
+		}	
+
+		for(Paddle p: paddleList){
+			p.draw(g);
+		}
 
 	}
 
-   @Override
+	@Override
 	public Dimension getPreferredSize() {
-	   return new Dimension(COURTWIDTH, COURTHEIGHT);
-    }
+		return new Dimension(COURTWIDTH, COURTHEIGHT);
+	}
 }

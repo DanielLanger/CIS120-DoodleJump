@@ -3,11 +3,10 @@ import java.awt.*;
 public class Ball extends GameObject {
 	final static int DIAMETER = 21;
 	public double gravity =0.8;
-	private int max;
-	
+	public static double holder;
+	public static double postMove=0;
 	public Ball(int x, int y, int velocityX, int velocityY) {
 		super(x, y, 0, velocityY, DIAMETER, DIAMETER);
-
 	}
 	
 
@@ -19,17 +18,19 @@ public class Ball extends GameObject {
 	}
 
 	// Bounce the ball, if necessary
-	public void bounce(Intersection i) {
+	public boolean bounce(Intersection i) {
 		switch (i) {
 		case NONE: break;
-		case UP: velocityY = -5; gravity=0.8; break;
+		case UP: velocityY = -4; gravity=0.8; return true; 
 		}
+		return false;
 	}
 	
 	public void move(){
+		holder=this.y;
 		super.move();	
 		this.y+=this.velocityY+gravity;
-		
+		postMove=this.y;
 	}
 
 	public void draw(Graphics g) {

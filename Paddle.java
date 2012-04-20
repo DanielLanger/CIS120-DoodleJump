@@ -6,6 +6,7 @@ public class Paddle extends GameObject {
 
 	public Paddle(int courtwidth, int courtheight) {
 		super((courtwidth - WIDTH) / 2, courtheight - HEIGHT - 20, 0, 0, WIDTH, HEIGHT);
+		
 	}
 
 	public void accelerate() {

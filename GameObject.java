@@ -12,6 +12,7 @@ public abstract class GameObject {
 
 	int rightBound; // Maximum permissible x, y values.
 	int bottomBound;
+
 	
 
 	public GameObject(int x, int y, int velocityX, int velocityY, int width,
@@ -41,6 +42,9 @@ public abstract class GameObject {
 
 		accelerate();
 		clip();
+		
+
+			
 	}
 
 	// Keep the object in the bounds of the court
@@ -49,9 +53,6 @@ public abstract class GameObject {
 			x = 0;
 		else if (x > rightBound)
 			x = rightBound;
-
-		//if (y < 0)
-			//y = 0;
 		//else if (y > bottomBound)
 			//y = bottomBound;
 	}
@@ -82,12 +83,14 @@ public abstract class GameObject {
 
 		if ( -diagTheta <= theta && theta <= diagTheta )
 			return Intersection.RIGHT;
-		if ( diagTheta <= theta && theta <= Math.PI - diagTheta )
-			return Intersection.DOWN;
 		if ( Math.PI - diagTheta <= theta || theta <= diagTheta - Math.PI )
 			return Intersection.LEFT;
-		// if ( diagTheta - Math.PI <= theta && theta <= diagTheta)
-		return Intersection.UP;
+		if ( diagTheta <= theta && theta <= Math.PI - diagTheta )
+			return Intersection.DOWN;
+		if ( diagTheta - Math.PI <= theta && theta <= diagTheta && Ball.postMove>Ball.holder)
+			return Intersection.UP;
+		
+		return Intersection.NONE;
 	}
 
 	public abstract void accelerate();
