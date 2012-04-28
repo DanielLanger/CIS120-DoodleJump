@@ -12,6 +12,7 @@ public static JLabel scores;
       // Top-level frame
       final JFrame frame = new JFrame("JumpUp!");
       frame.setLocation(300,100);
+      frame.setBackground(Color.WHITE);
 
       // Main playing area
       final PongCourt court = new PongCourt();
@@ -23,10 +24,12 @@ public static JLabel scores;
 	  w1.setBackground(Color.WHITE);
 	  w1.setLocation(350, 200);
 		  JTextPane textPane = new JTextPane();
+		  textPane.setBackground(Color.GREEN);
 		  textPane.setText("Welcome to JumpUp! The goal of this game is to jump...up!! " +
 		  		"Use the left and right arrow keys to bounce from paddle to paddle and see how high you can get! " +
 		  		"Be careful though, the paddles quickly fall down after you jump, so be sure " +
-		  		"to JumpUp! Press resume game to go back to your game. You will have 3 seconds to prepare!");
+		  		"to JumpUp! Watch out for the moving paddles! Try to get the yellow powerup, it will help you on your journey up! " +
+		  		"Press resume game to go back to your game. You will have 3 seconds to prepare!");
 		  w1.add(textPane);
   
 	  //resume game button

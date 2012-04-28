@@ -1,15 +1,21 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class Ball extends GameObject {
 	final static int DIAMETER = 21;
 	public double gravity =0.8;
-	public static double holder;
-	public static double postMove=0;
+	public static double holder;//score before
+	public static double postMove=0;//score after
 	public Ball(int x, int y, int velocityX, int velocityY) {
 		super(x, y, 0, velocityY, DIAMETER, DIAMETER);
 	}
 	
-
+	
 	public void accelerate() {
 		if (x < 0)
 			x=rightBound;
@@ -33,8 +39,11 @@ public class Ball extends GameObject {
 		postMove=this.y;
 	}
 
-	public void draw(Graphics g) {
+	public void draw(Graphics g){
+		g.setColor(Color.RED);
 		g.fillOval(x, y, DIAMETER, DIAMETER);
+		g.setColor(Color.BLACK);
+		
 		
 		
 	}
